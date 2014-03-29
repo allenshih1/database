@@ -13,6 +13,7 @@
   {
     $_SESSION[isAuth] = "TRUE";
     $is_admin = $user->is_admin;
+    $_SESSION['isAdmin'] = $is_admin;
   }
   if(isset($_SESSION['isAuth']))
   {

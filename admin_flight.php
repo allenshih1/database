@@ -1,6 +1,6 @@
 <? require_once("header.php"); ?>
 <?
-if(isset($_SESSION['isAuth']))
+if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
 {
   require_once("db.php");
   if(isset($_POST['delete']))
@@ -189,6 +189,12 @@ if(isset($_SESSION['isAuth']))
     <button type="submit">新增</button>
   </form>
   <?}?>
+<?
+}
+else if(isset($_SESSION['isAuth']))
+{
+?>
+  Permission denied
 <?
 }
 else
