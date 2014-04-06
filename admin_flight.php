@@ -75,8 +75,6 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
     </tr>
     <?
   }
-  if(isset($_POST['create']))
-  {
   ?>
     <tr>
       <form action="create_flight.php" method="post">
@@ -88,23 +86,14 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       <td> <input type="datetime-local" name="arrival_date" step="1"> </td>
       <td>
         <input type="hidden" name="create_flight" value="TRUE">
-        <button type="submit">儲存</button>
+        <button type="submit">新增</button>
       </td>
       </form>
       <td>
         <a href="admin_flight.php"><button type="button">取消</button></a>
       </td>
     </tr>
-  <?
-  }
-  ?>
   </table>
-  <? if(!isset($_POST["create"]) && !isset($_POST["update"])){ ?>
-  <form action="admin_flight.php" method="post">
-    <input type="hidden" name="create" value="TRUE">
-    <button type="submit">新增</button>
-  </form>
-  <?}?>
 <?
 }
 else if(isset($_SESSION['isAuth']))
