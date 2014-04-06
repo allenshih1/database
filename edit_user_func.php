@@ -13,7 +13,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
   {
     $sql = "UPDATE User SET is_admin = ? WHERE id = ?";
     $sth = $db->prepare($sql);
-    $sth->execute(array(!$user->is_admin,$id));
+    $sth->execute(array(true,$id));
     header('Location: account_management.php');
   }
   else

@@ -21,7 +21,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
     <td> <?= ($user->is_admin ? "admin" : "user") ?> </td>
     <form action="edit_user_func.php" method="post">
     <input type="hidden" name="id" value="<?= $user->id ?>">
-    <td> <button type="submit"> 更改權限 </button></td>
+    <td><?php if(!$user->is_admin) { ?> <button type="submit"> 更改權限 </button><?php } ?></td>
     </form>
     <form action="delete_user_func.php" method="post">
     <input type="hidden" name="id" value="<?= $user->id ?>">
