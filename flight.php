@@ -7,7 +7,6 @@ if(isset($_SESSION['isAuth']))
   $flights = $db->prepare($sql);
   $flights->execute();
   ?>
-  <a href=logout.php>登出</a><br>
   <table style="width:800px">
     <tr>
       <td> id </td>

@@ -90,7 +90,6 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
   $flights = $db->prepare($sql);
   $flights->execute();
   ?>
-  <a href=logout.php>登出</a><br>
   <table style="width:1000px">
     <tr>
       <td> id </td>
