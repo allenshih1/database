@@ -3,48 +3,6 @@
 if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
 {
   require_once("db.php");
-  if(isset($_POST['delete']))
-  {
-    $sql = "DELETE FROM Flight WHERE id = ?";
-    $delete_flight = $db->prepare($sql);
-    $delete_flight->execute(array($_POST['delete']));
-  }
-  if(isset($_POST['create_flight']))
-  {
-    $cf = false;
-    if(preg_match('/ /', $_POST['flight_number']) || $_POST['flight_number'] ===''){
-      echo "flight_number cannot contain space or be empty<br>";
-      $cf = true;
-    }
-    if(preg_match('/ /', $_POST['departure']) || $_POST['departure'] ===''){
-      echo "depature cannot contain space or be empty<br>";
-      $cf = true;
-    }
-    if(preg_match('/ /', $_POST['destination']) || $_POST['destination'] ===''){
-      echo "destination cannot contain space or be empty<br>";
-      $cf = true;
-    }
-    if($_POST['departure_date'] ===''){
-      echo "depature_date cannot be empty<br>";
-      $cf = true;
-    }
-    if($_POST['arrival_date'] ===''){
-      echo "arrival_date cannot be empty<br>";
-      $cf = true;
-    }
-    if($cf !== true)
-    {
-      $sql = "INSERT INTO Flight ( flight_number, departure, destination, departure_date, arrival_date)"
-        ."VALUES (?, ?, ?, ?, ?)";
-      $create_flight = $db->prepare($sql);
-      $create_flight->execute(
-        array($_POST['flight_number'],
-        $_POST['departure'],
-        $_POST['destination'],
-        $_POST['departure_date'],
-        $_POST['arrival_date']));
-    }
-  }
   if(isset($_POST['update_flight']))
   {
     $uf = false;
@@ -146,7 +104,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
         </form>
       </td>
       <td>
-        <form action="admin_flight.php" method="post">
+        <form action="delete_flight.php" method="post">
           <input type="hidden" name="delete" value="<?= $flight->id ?>">
           <button type="submit">刪除</button>
         </form>
@@ -162,7 +120,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
   {
   ?>
     <tr>
-      <form action="admin_flight.php" method="post">
+      <form action="create_flight.php" method="post">
       <td> </td>
       <td> <input type="text" name="flight_number"> </td>
       <td> <input type="text" name="departure"> </td>
