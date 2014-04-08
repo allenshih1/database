@@ -2,19 +2,26 @@
 <?
 if(isset($_SESSION['isAuth']))
 {
+  $order = 'flight_number ASC';
+  if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
+  {
+    $order = $_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
+  }
   require_once("db.php");
-  $sql = "SELECT * FROM Flight";
+  require_once("order_button.php");
+  $sql = "SELECT * FROM Flight ORDER BY $order";
   $flights = $db->prepare($sql);
   $flights->execute();
+  $source = "flight.php";
   ?>
   <table style="width:800px">
     <tr>
-      <td> id </td>
-      <td> flight_number </td>
-      <td> departure </td>
-      <td> destination </td>
-      <td> departure_date </td>
-      <td> arrival_date </td>
+      <td> id <?echo OrderButton('id',$source);?> </td>
+      <td> flight_number <?echo OrderButton('flight_number',$source);?></td>
+      <td> departure <?echo OrderButton('departure',$source);?></td>
+      <td> destination <?echo OrderButton('destination',$source);?></td>
+      <td> departure_date <?echo OrderButton('departure_date',$source);?></td>
+      <td> arrival_date <?echo OrderButton('arrival_date',$source);?></td>
     </tr>
   <?
   while($flight = $flights->fetchObject())

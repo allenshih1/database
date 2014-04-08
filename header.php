@@ -7,6 +7,7 @@ session_start();
   <head>
     <meta charset="utf-8">
     <title>My Flight site</title>
+      <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   </head>
   <body>
 <?php
