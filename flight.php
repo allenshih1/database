@@ -24,11 +24,6 @@ if(isset($_SESSION['isAuth']))
   $flights->execute();
   $source = "flight.php";
   require_once("search_func.php");
-  if(isset($_SESSION['searchError']))
-  {
-    echo "keyword cannot empty or include space";
-    unset($_SESSION['searchError']);
-  }
   ?>
   <table style="width:800px">
     <tr>
