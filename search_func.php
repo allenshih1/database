@@ -1,4 +1,4 @@
-<form action ="flight.php" method ="GET">
+<form action = "<?$source?>" method ="GET">
   <select name = "choice">
     <option value="flight_number">Flight_number</option>
     <option value="departure">Departure</option>
