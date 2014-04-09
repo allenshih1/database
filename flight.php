@@ -7,12 +7,28 @@ if(isset($_SESSION['isAuth']))
   {
     $order = $_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
   }
+  if(isset($_GET['choice']) && isset($_GET['keyword']))
+  {
+    if($_GET['keyword'] ==="" || preg_match("/ /",$_GET['keyword']))
+      $_SESSION['searchError'] = true;
+    else{
+       $_SESSION['search'] = "WHERE ".$_GET['choice']." like '%".$_GET['keyword']."%'";
+    }
+  }
+  if(!isset($_SESSION['search']))
+    $_SESSION['search'] = " ";
   require_once("db.php");
   require_once("order_button.php");
-  $sql = "SELECT * FROM Flight ORDER BY $order";
+  $sql = "SELECT * FROM Flight ".$_SESSION['search']." ORDER BY $order";
   $flights = $db->prepare($sql);
   $flights->execute();
   $source = "flight.php";
+  require_once("search_func.php");
+  if(isset($_SESSION['searchError']))
+  {
+    echo "keyword cannot empty or include space";
+    unset($_SESSION['searchError']);
+  }
   ?>
   <table style="width:800px">
     <tr>
