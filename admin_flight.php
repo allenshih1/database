@@ -56,7 +56,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       while($airport=$airports->fetchObject())
       {
       ?>
-          <option value="<?= $airport->name ?>"<?= $airport->name===$flight->departure ? "selected = \"selected\"" : "" ?>> <?= $airport->name ?> </option>"
+          <option value="<?= $airport->name ?>"<?= $airport->name===$flight->departure ? "selected = \"selected\"" : "" ?>> <?= $airport->name ?> </option>
       <?php
       }
       ?>
@@ -72,7 +72,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       while($airport=$airports->fetchObject())
       {
       ?>
-          <option value="<?= $airport->name ?>"<?= $airport->name===$flight->destination ? "selected = \"selected\"" : "" ?>> <?= $airport->name ?> </option>"
+          <option value="<?= $airport->name ?>"<?= $airport->name===$flight->destination ? "selected = \"selected\"" : "" ?>> <?= $airport->name ?> </option>
       <?php
       }
       ?>
@@ -147,7 +147,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       while($airport=$airports->fetchObject())
       {
       ?>
-          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>"
+          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>
       <?php
       }
       ?>
@@ -163,7 +163,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       while($airport=$airports->fetchObject())
       {
       ?>
-          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>"
+          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>
       <?php
       }
       ?>
