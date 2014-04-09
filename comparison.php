@@ -8,24 +8,13 @@ if(isset($_SESSION['isAuth']))
   {
     $order = $_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
   }
-  if(isset($_GET['choice']) && isset($_GET['keyword']))
-  {
-    if($_GET['keyword'] ==="" || preg_match("/ /",$_GET['keyword']))
-      $_SESSION['searchError'] = true;
-    else{
-       $_SESSION['search'] = "WHERE ".$_GET['choice']." like '%".$_GET['keyword']."%'";
-    }
-  }
-  if(!isset($_SESSION['search']))
-    $_SESSION['search'] = " ";
   require_once("db.php");
   require_once("order_button.php");
-  $sql = "SELECT * FROM Compare, Flight WHERE ".$_SESSION['search'].
+  $sql = "SELECT * FROM Compare, Flight WHERE ".
     "Compare.user_id = ? and Compare.flight_id = Flight.id ORDER BY $order";
   $flights = $db->prepare($sql);
   $flights->execute(array($uid));
   $source = "comparison.php";
-  require_once("search_func.php");
   ?>
   <table style="width:800px">
     <tr>

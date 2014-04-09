@@ -22,18 +22,18 @@ if(isset($_SESSION['isAuth']))
   $sql = "SELECT * FROM Flight ".$_SESSION['search']." ORDER BY $order";
   $flights = $db->prepare($sql);
   $flights->execute();
-  $source = "flight.php";
+  $_SESSION['source'] = "flight.php";
   require_once("search_func.php");
   ?>
   <table style="width:800px">
     <tr>
-      <td> Id <?echo OrderButton('id',$source);?> </td>
-      <td> Flight_number <?echo OrderButton('flight_number',$source);?></td>
-      <td> Departure <?echo OrderButton('departure',$source);?></td>
-      <td> Destination <?echo OrderButton('destination',$source);?></td>
-      <td> Departure_date <?echo OrderButton('departure_date',$source);?></td>
-      <td> Arrival_date <?echo OrderButton('arrival_date',$source);?></td>
-      <td> Price <?echo OrderButton('ticket_price',$source);?></td>
+      <td> Id <?echo OrderButton('id',$_SESSION['source']);?> </td>
+      <td> Flight_number <?echo OrderButton('flight_number',$_SESSION['source']);?></td>
+      <td> Departure <?echo OrderButton('departure',$_SESSION['source']);?></td>
+      <td> Destination <?echo OrderButton('destination',$_SESSION['source']);?></td>
+      <td> Departure_date <?echo OrderButton('departure_date',$_SESSION['source']);?></td>
+      <td> Arrival_date <?echo OrderButton('arrival_date',$_SESSION['source']);?></td>
+      <td> Price <?echo OrderButton('ticket_price',$_SESSION['source']);?></td>
    </tr>
   <?
   while($flight = $flights->fetchObject())
