@@ -16,13 +16,14 @@ if(isset($_SESSION['isAuth']))
   ?>
   <table style="width:800px">
     <tr>
-      <td> id <?echo OrderButton('id',$source);?> </td>
-      <td> flight_number <?echo OrderButton('flight_number',$source);?></td>
-      <td> departure <?echo OrderButton('departure',$source);?></td>
-      <td> destination <?echo OrderButton('destination',$source);?></td>
-      <td> departure_date <?echo OrderButton('departure_date',$source);?></td>
-      <td> arrival_date <?echo OrderButton('arrival_date',$source);?></td>
-    </tr>
+      <td> Id <?echo OrderButton('id',$source);?> </td>
+      <td> Flight_number <?echo OrderButton('flight_number',$source);?></td>
+      <td> Departure <?echo OrderButton('departure',$source);?></td>
+      <td> Destination <?echo OrderButton('destination',$source);?></td>
+      <td> Departure_date <?echo OrderButton('departure_date',$source);?></td>
+      <td> Arrival_date <?echo OrderButton('arrival_date',$source);?></td>
+      <td> Price <?echo OrderButton('ticket_price',$source);?></td>
+   </tr>
   <?
   while($flight = $flights->fetchObject())
   {
@@ -34,7 +35,8 @@ if(isset($_SESSION['isAuth']))
       <td> <? echo $flight->destination; ?> </td>
       <td> <? echo $flight->departure_date; ?> </td>
       <td> <? echo $flight->arrival_date; ?> </td>
-    </tr>
+      <td> <? echo $flight->ticket_price; ?> </td>
+  </tr>
   <?
   }
 }
