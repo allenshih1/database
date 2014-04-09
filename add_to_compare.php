@@ -19,7 +19,10 @@ if(isset($_SESSION['isAuth']))
       ."VALUES (?, ?)";
     $add_compare = $db->prepare($sql);
     $add_compare->execute(array($uid, $fid));
-    header('Location:flight.php');
+    if($_SESSION['isAdmin'])
+      header('Location:admin_flight.php');
+    else
+      header('Location:flight.php');
   }
 }
 ?>

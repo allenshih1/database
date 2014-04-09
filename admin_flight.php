@@ -89,6 +89,12 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
           <button type="submit">刪除</button>
         </form>
       </td>
+      <td>
+        <form action="add_to_compare.php" method="post">
+          <input type="hidden" name="flight_id" value="<?= $flight->id ?>">
+          <button type="submit">加入比價表</button>
+        </form>
+      </td>
   <?
       }
     }
