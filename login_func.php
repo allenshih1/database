@@ -5,7 +5,7 @@
   $password = $_POST['password'];
   $PWD = hash('sha256', $password);
   require_once('db.php');
-  $sql = "SELECT `password`,`is_admin` FROM User "
+  $sql = "SELECT * FROM User "
      ."WHERE account = ? AND password = ? ";
   $login = $db->prepare($sql);
   $login->execute(array($account,$PWD));
@@ -14,6 +14,7 @@
     $_SESSION[isAuth] = "TRUE";
     $is_admin = $user->is_admin;
     $_SESSION['isAdmin'] = $is_admin;
+    $_SESSION['uid'] = $user->id;
   }
   if(isset($_SESSION['isAuth']))
   {
