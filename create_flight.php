@@ -29,15 +29,16 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
     }
     if($cf !== true)
     {
-      $sql = "INSERT INTO Flight ( flight_number, departure, destination, departure_date, arrival_date)"
-        ."VALUES (?, ?, ?, ?, ?)";
+      $sql = "INSERT INTO Flight ( flight_number, departure, destination, departure_date, arrival_date, ticket_price)"
+        ."VALUES (?, ?, ?, ?, ?, ?)";
       $create_flight = $db->prepare($sql);
       $create_flight->execute(
         array($_POST['flight_number'],
         $_POST['departure'],
         $_POST['destination'],
         $_POST['departure_date'],
-        $_POST['arrival_date']));
+        $_POST['arrival_date'],
+        $_POST['ticket_price']));
       header('Location:admin_flight.php');
     }
   }

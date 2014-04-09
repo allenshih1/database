@@ -33,7 +33,8 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       ." departure = ?,"
       ." destination = ?,"
       ." departure_date = ?,"
-      ." arrival_date = ?"
+      ." arrival_date = ?,"
+      ." ticket_price = ?"
       ." WHERE ID = ?";
     $update_flight = $db->prepare($sql);
     $update_flight->execute(
@@ -42,6 +43,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       $_POST['destination'],
       $_POST['departure_date'],
       $_POST['arrival_date'],
+      $_POST['ticket_price'],
       $_POST['id']));
       header('Location:admin_flight.php');
     }

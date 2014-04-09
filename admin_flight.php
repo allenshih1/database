@@ -50,6 +50,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       <td> <input type="text" name="destination" value="<?= $flight->destination ?>"> </td>
       <td> <input type="datetime-local" name="departure_date" value="<? echo date("Y-m-d\TH:i:s", strtotime($flight->departure_date)); ?>" step="1"> </td>
       <td> <input type="datetime-local" name="arrival_date" value="<? echo date("Y-m-d\TH:i:s", strtotime($flight->arrival_date)); ?>" step="1"> </td>
+      <td> <input type="text" name="ticket_price" value="<?= $flight->ticket_price ?>"> </td>
       <td>
         <input type="hidden" name="update_flight" value="TRUE">
         <input type="hidden" name="id" value="<?= $flight->id ?>">
@@ -70,6 +71,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       <td> <?= $flight->destination; ?> </td>
       <td> <?= $flight->departure_date; ?> </td>
       <td> <?= $flight->arrival_date; ?> </td>
+      <td> <?= $flight->ticket_price; ?> </td>
 
   <?
     if(!isset($_POST['create']) && !isset($_POST['update']))
@@ -103,6 +105,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       <td> <input type="text" name="destination"> </td>
       <td> <input type="datetime-local" name="departure_date" step="1"> </td>
       <td> <input type="datetime-local" name="arrival_date" step="1"> </td>
+      <td> <input type="text" name="ticket_price"> </td>
       <td>
         <input type="hidden" name="create_flight" value="TRUE">
         <button type="submit">新增</button>
