@@ -133,55 +133,8 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
     <?
   }
   ?>
-    <tr>
-      <form action="create_flight.php" method="post">
-      <td> </td>
-      <td> <input type="text" name="flight_number"> </td>
-      <td>
-        <select name="departure">
-      <?php
-      $sql = "SELECT * FROM Airport";
-      $airports = $db->prepare($sql);
-      $airports->execute();
-
-      while($airport=$airports->fetchObject())
-      {
-      ?>
-          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>
-      <?php
-      }
-      ?>
-        </select>
-      </td>
-      <td>
-        <select name="destination">
-      <?php
-      $sql = "SELECT * FROM Airport";
-      $airports = $db->prepare($sql);
-      $airports->execute();
-
-      while($airport=$airports->fetchObject())
-      {
-      ?>
-          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>
-      <?php
-      }
-      ?>
-        </select>
-      </td>
-      <td> <input type="datetime-local" name="departure_date" value="<? echo date("Y-m-d\TH:i:s", time()); ?>" step="1"> </td>
-      <td> <input type="datetime-local" name="arrival_date" value="<? echo date("Y-m-d\TH:i:s", time()); ?>" step="1"> </td>
-      <td> <input type="text" name="ticket_price"> </td>
-      <td>
-        <input type="hidden" name="create_flight" value="TRUE">
-        <button type="submit">新增</button>
-      </td>
-      </form>
-      <td>
-        <a href="admin_flight.php"><button type="button">取消</button></a>
-      </td>
-    </tr>
   </table>
+  <a href="create_flight.php"><button type="button">新增</button></a>
 <?
 }
 else if(isset($_SESSION['isAuth']))
