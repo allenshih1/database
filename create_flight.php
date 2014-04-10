@@ -1,3 +1,4 @@
+<? require_once('check_exist.php'); ?>
 <?php
 session_save_path("./session/");
 session_start();

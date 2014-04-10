@@ -1,3 +1,4 @@
+<?php require_once('check_exist.php'); ?>
 <form action = "<?$_SESSION['source']?>" method ="GET">
   <select name = "choice">
     <option value="flight_number">Flight_number</option>
