@@ -9,7 +9,6 @@ else{
 <FORM ACTION="register_func.php" METHOD="POST">
   <INPUT TYPE="text" NAME="account" PLACEHOLDER="account"><br>
   <INPUT TYPE="password" NAME="password" PLACEHOLDER="password"><br>
-  <INPUT TYPE="checkbox" name="is_admin" value="TRUE">admin<br>
   <button TYPE="submit">註冊</button>
 </FORM>
 <?}?>
