@@ -1,4 +1,5 @@
 <?php require_once("header.php"); ?>
+<h1>機場管理</h1>
 <?php
 if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
 {
