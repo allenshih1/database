@@ -49,10 +49,20 @@ if(isset($_SESSION['isAuth']))
       <td> <? echo $flight->arrival_date; ?> </td>
       <td> <? echo $flight->ticket_price; ?> </td>
       <td>
+      <?php
+        $sql = "SELECT * FROM Compare WHERE flight_id = ? and user_id = ?";
+        $favorite = $db->prepare($sql);
+        $favorite->execute(array($flight->id, $_SESSION['uid']));
+        if(!($favorite->fetchObject()))
+        {
+      ?>
         <form action="add_to_compare.php" method="post">
           <input type="hidden" name="flight_id" value="<?= $flight->id ?>">
           <button type="submit">加入比價表</button>
         </form>
+      <?php
+        }
+      ?>
       </td>
   </tr>
   <?
