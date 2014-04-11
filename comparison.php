@@ -17,7 +17,7 @@ if(isset($_SESSION['isAuth']))
   $flights->execute(array($uid));
   $source = "comparison.php";
   ?>
-  <table style="width:800px">
+  <table style="width:1000px">
     <tr>
       <td> Id <?echo OrderButton('id',$source);?> </td>
       <td> Flight_number <?echo OrderButton('flight_number',$source);?></td>
