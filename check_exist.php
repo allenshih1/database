@@ -10,6 +10,7 @@ if(isset($_SESSION['isAuth']))
   if(!($check->fetchObject()))
   {
     unset($_SESSION['isAuth']);
+    header('Location:login.php');
   }
 }
 ?>

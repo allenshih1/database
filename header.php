@@ -1,6 +1,7 @@
 <?
 session_save_path("./session/");
 session_start();
+require_once('check_exist.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,7 +12,6 @@ session_start();
   </head>
   <body>
 <?php
-require_once('check_exist.php');
 if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
 {
 ?>
