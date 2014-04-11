@@ -26,7 +26,7 @@ if(isset($_SESSION['isAuth']))
   $_SESSION['source'] = "flight.php";
   require_once("search_func.php");
   ?>
-  <table style="width:800px">
+  <table style="width:1000px">
     <tr>
       <td> Id <?echo OrderButton('id',$_SESSION['source']);?> </td>
       <td> Flight_number <?echo OrderButton('flight_number',$_SESSION['source']);?></td>
