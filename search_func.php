@@ -5,7 +5,7 @@
     <option value="departure">Departure</option>
     <option value="destination">Destination</option>
   </select>
-  <input type="TEXT" name="keyword" placeholder="keyword">
+  <input type="TEXT" name="keyword" placeholder="keyword" value="<?= $_GET['keyword'] ?>">
   <button type="submit"><i class="fa fa-search"></i></button>
 
 <?if(isset($_SESSION['searchError']))
