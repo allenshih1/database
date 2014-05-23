@@ -28,7 +28,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       while($airport=$airports->fetchObject())
       {
       ?>
-          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>
+          <option value="<?= $airport->abbr ?>"> <?= $airport->abbr ?> </option>
       <?php
       }
       ?>
@@ -44,7 +44,7 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
       while($airport=$airports->fetchObject())
       {
       ?>
-          <option value="<?= $airport->name ?>"> <?= $airport->name ?> </option>
+          <option value="<?= $airport->abbr ?>"> <?= $airport->abbr ?> </option>
       <?php
       }
       ?>
