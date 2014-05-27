@@ -5,7 +5,7 @@ $destination = $_POST['destination'];
 $max_transfer = $_POST['max_transfer'];
 $_SESSION['source'] = "search_ticket.php";
 
-$order = 'flight_number ASC';
+$order = ' ';
 if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
 {
   if(($_GET['orderKey'] == 'f_departure_date' || $_GET['orderKey'] == 'final_time' || $_GET['orderKey'] == 'price')
