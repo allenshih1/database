@@ -22,28 +22,46 @@ require_once("order_button.php");
   Departure_Airport
   <select name="departure">
   <?php
-    $sql = "SELECT `abbr` FROM Airport";
-    $airports = $db->prepare($sql);
-    $airports->execute();
-    while($airport=$airports->fetchObject())
+    $sql = "SELECT `name`, `abbr` FROM Country ORDER BY `name`";
+    $countries = $db->prepare($sql);
+    $countries->execute();
+    while($country = $countries->fetchObject())
     {
+      ?>
+      <optgroup label="<?= $country->name ?>">
+      <?php
+      $sql = "SELECT `name`, `abbr` FROM Airport WHERE country = ?";
+      $airports = $db->prepare($sql);
+      $airports->execute(array($country->abbr));
+      while($airport=$airports->fetchObject())
+      {
     ?>
-    <option value="<?= $airport->abbr ?>"> <?= $airport->abbr ?> </option>
+        <option value="<?= $airport->abbr ?>"> <?= $airport->name ?> </option>
     <?php
+      }
     }
     ?>
   </select>
   Arrival_Airport
   <select name="destination">
   <?php
-    $sql = "SELECT `abbr` FROM Airport";
-    $airports = $db->prepare($sql);
-    $airports->execute();
-    while($airport=$airports->fetchObject())
+    $sql = "SELECT `name`, `abbr` FROM Country ORDER BY `name`";
+    $countries = $db->prepare($sql);
+    $countries->execute();
+    while($country = $countries->fetchObject())
     {
+      ?>
+      <optgroup label="<?= $country->name ?>">
+      <?php
+      $sql = "SELECT `name`, `abbr` FROM Airport WHERE country = ?";
+      $airports = $db->prepare($sql);
+      $airports->execute(array($country->abbr));
+      while($airport=$airports->fetchObject())
+      {
     ?>
-    <option value="<?= $airport->abbr ?>"> <?= $airport->abbr ?> </option>
+        <option value="<?= $airport->abbr ?>"> <?= $airport->name ?> </option>
     <?php
+      }
     }
     ?>
   </select>
