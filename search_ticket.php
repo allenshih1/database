@@ -3,8 +3,19 @@
 $departure = $_POST['departure'];
 $destination = $_POST['destination'];
 $max_transfer = $_POST['max_transfer'];
+$_SESSION['source'] = "search_ticket.php";
+
+$order = 'flight_number ASC';
+if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
+{
+  if(($_GET['orderKey'] == 'f_departure_date' || $_GET['orderKey'] == 'final_time' || $_GET['orderKey'] == 'price')
+     && ($_GET['orderDirection'] == 'asc' || $_GET['orderDirection'] == 'desc' ))
+    $order = $_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
+}
+
 echo "$max_transfer";
 require_once("db.php");
+require_once("order_button.php");
 ?>
 <h1>機票查詢</h1>
 <form action="search_ticket.php" method="POST">
@@ -45,9 +56,17 @@ require_once("db.php");
   <button type="submit"><i class="fa fa-search"></i></button>
 </form>
 <?php
-  $sql = 
+  $sql =
 "SELECT
-	CASE type
+  CASE type
+		WHEN 0 THEN f_arrival_date
+		WHEN 1 THEN s_arrival_date
+		WHEN 2 THEN t_arrival_date
+		ELSE             null
+	END
+	AS final_time,
+
+  CASE type
 		WHEN 0 THEN  0
 		WHEN 1 THEN TIMEDIFF(s_departure_date, f_arrival_date)
 		WHEN 2 THEN ADDTIME( TIMEDIFF(s_departure_date, f_arrival_date), TIMEDIFF(t_departure_date, s_arrival_date))
@@ -77,8 +96,8 @@ require_once("db.php");
 	a.*
 FROM
 (
-	SELECT 
-		CASE 
+	SELECT
+		CASE
 			WHEN s_id is null THEN 0
 			WHEN t_id is null THEN 1
 			ELSE 2
@@ -95,7 +114,7 @@ FROM
 	FROM
 		`Flight` AS f LEFT JOIN
 		(
-			SELECT 
+			SELECT
 				s.id AS s_id,
 				s.flight_number AS s_flight_number,
 				s.departure AS s_departure,
@@ -110,11 +129,11 @@ FROM
 				t.departure_date AS t_departure_date,
 				t.arrival_date AS t_arrival_date,
 				t.ticket_price AS t_ticket_price
-			FROM `Flight` AS s LEFT JOIN `Flight` AS t 
-			ON s.destination = t.departure AND s.departure_date + interval 2 hour <= t.departure_date
+			FROM `Flight` AS s LEFT JOIN `Flight` AS t
+			ON s.destination = t.departure AND s.destination_date + interval 2 hour <= t.departure_date
 		) AS b
-	ON f.destination = s_departure AND f.departure_date + interval 2 hour <= s_departure_date
-	WHERE 
+	ON f.destination = s_departure AND f.destination_date + interval 2 hour <= s_departure_date
+	WHERE
 		f.departure = ?
 		AND
 		CASE
@@ -123,22 +142,21 @@ FROM
 			ELSE t_destination
 		END = ?
 ) AS a
-WHERE type <= ?";
+WHERE type <= ? ORDER BY $order";
 
   $tickets = $db->prepare($sql);
   $tickets->execute(array($departure, $destination, $max_transfer));
 ?>
   <table style="width:1000px">
     <tr>
-      <td> Result </td>
       <td> Flight_Number </td>
       <td> Departure_Airport </td>
       <td> Destination_Airport </td>
-      <td> Departure_Time </td>
-      <td> Arrival_Time </td>
+      <td> Departure_Time <?echo OrderButton('f_departure_date',$_SESSION['source']);?></td>
+      <td> Arrival_Time <?echo OrderButton('final_time',$_SESSION['source']);?></td>
       <td> Flight_Time </td>
       <td> Transfer Time </td>
-      <td> Price </td>
+      <td> Price <?echo OrderButton('price',$_SESSION['source']);?></td>
     </tr>
 <?php
   $i = 1;

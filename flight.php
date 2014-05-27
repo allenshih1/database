@@ -6,7 +6,10 @@ if(isset($_SESSION['isAuth']))
   $order = 'flight_number ASC';
   if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
   {
-    $order = $_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
+    if(($_GET['orderKey'] == 'id' || $_GET['orderKey'] == 'flight_number' || $_GET['orderKey'] == 'destination' ||
+      $_GET['orderKey'] == 'departure' || $_GET['orderKey'] == 'departure_date' || $_GET['orderKey'] == 'arrival_date' ||
+      $_GET['orderKey'] == 'ticket_price')&& ($_GET['orderDirection'] == 'asc' || $_GET['orderDirection'] == 'desc' ))
+        $order = $_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
   }
   if(isset($_GET['choice']) && isset($_GET['keyword']))
   {
