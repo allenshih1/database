@@ -76,15 +76,14 @@ require_once("order_button.php");
 <?php
   $sql =
 "SELECT
-  CASE type
+	CASE type
 		WHEN 0 THEN f_arrival_date
 		WHEN 1 THEN s_arrival_date
 		WHEN 2 THEN t_arrival_date
 		ELSE             null
 	END
 	AS final_time,
-
-  CASE type
+	CASE type
 		WHEN 0 THEN  0
 		WHEN 1 THEN TIMEDIFF(s_departure_date, f_arrival_date)
 		WHEN 2 THEN ADDTIME( TIMEDIFF(s_departure_date, f_arrival_date), TIMEDIFF(t_departure_date, s_arrival_date))
@@ -117,56 +116,83 @@ FROM
 	SELECT
 		CASE
 			WHEN s_id is null THEN 0
-			WHEN t_id is null THEN 1
+			WHEN t.id is null THEN 1
 			ELSE 2
 		END
 		AS type,
-		f.id AS f_id,
-		f.flight_number AS f_flight_number,
-		f.departure AS f_departure,
-		f.destination AS f_destination,
-		f.departure_date AS f_departure_date,
-		f.arrival_date AS f_arrival_date,
-		f.ticket_price AS f_ticket_price,
-		b.*
+		b.*,
+		t.id AS t_id,
+		t.flight_number AS t_flight_number,
+		t.departure AS t_departure,
+		t.destination AS t_destination,
+		t.departure_date AS t_departure_date,
+		t.arrival_date AS t_arrival_date,
+		t.ticket_price AS t_ticket_price
 	FROM
-		`Flight` AS f LEFT JOIN
 		(
 			SELECT
+				f.id AS f_id,
+				f.flight_number AS f_flight_number,
+				f.departure AS f_departure,
+				f.destination AS f_destination,
+				f.departure_date AS f_departure_date,
+				f.arrival_date AS f_arrival_date,
+				f.ticket_price AS f_ticket_price,
 				s.id AS s_id,
 				s.flight_number AS s_flight_number,
 				s.departure AS s_departure,
 				s.destination AS s_destination,
 				s.departure_date AS s_departure_date,
 				s.arrival_date AS s_arrival_date,
-				s.ticket_price AS s_ticket_price,
-				t.id AS t_id,
-				t.flight_number AS t_flight_number,
-				t.departure AS t_departure,
-				t.destination AS t_destination,
-				t.departure_date AS t_departure_date,
-				t.arrival_date AS t_arrival_date,
-				t.ticket_price AS t_ticket_price
-			FROM `Flight` AS s LEFT JOIN `Flight` AS t
-			ON s.destination = t.departure AND s.destination_date + interval 2 hour <= t.departure_date
+				s.ticket_price AS s_ticket_price
+			FROM `Flight` AS f JOIN
+			(
+				SELECT * FROM `Flight` UNION
+				SELECT
+					null AS id,
+					null AS flight_number,
+					null AS departure,
+					null AS destination,
+					null AS departure_date,
+					null AS arrival_date,
+					null AS ticket_price
+			) AS s
+			ON
+				(f.destination = s.departure AND f.arrival_date + interval 2 hour <= s.departure_date)
+				OR s.id is null
 		) AS b
-	ON f.destination = s_departure AND f.destination_date + interval 2 hour <= s_departure_date
+		JOIN
+		(
+			SELECT * FROM `Flight` UNION
+			SELECT
+				null AS id,
+				null AS flight_number,
+				null AS departure,
+				null AS destination,
+				null AS departure_date,
+				null AS arrival_date,
+				null AS ticket_price
+		) AS t
+	ON
+		(s_destination = t.departure AND s_arrival_date + interval 2 hour <= t.departure_date)
+		OR t.id is null
 	WHERE
-		f.departure = ?
+		f_departure = ?
 		AND
 		CASE
-			WHEN s_id is null THEN f.destination
-			WHEN t_id is null THEN s_destination
-			ELSE t_destination
+			WHEN s_id is null THEN f_destination
+			WHEN t.id is null THEN s_destination
+			ELSE t.destination
 		END = ?
 ) AS a
-WHERE type <= ? ORDER BY $order";
+WHERE type <= ?";
 
   $tickets = $db->prepare($sql);
   $tickets->execute(array($departure, $destination, $max_transfer));
 ?>
   <table style="width:1000px">
     <tr>
+      <td> Result </td>
       <td> Flight_Number </td>
       <td> Departure_Airport </td>
       <td> Destination_Airport </td>
