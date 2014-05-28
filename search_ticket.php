@@ -10,7 +10,7 @@ if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
 {
   if(($_GET['orderKey'] == 'f_departure_date' || $_GET['orderKey'] == 'final_time' || $_GET['orderKey'] == 'price')
      && ($_GET['orderDirection'] == 'asc' || $_GET['orderDirection'] == 'desc' ))
-    $order = $_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
+    $order = "ORDER BY ".$_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
 }
 
 echo "$max_transfer";
@@ -185,7 +185,7 @@ FROM
 			ELSE t.destination
 		END = ?
 ) AS a
-WHERE type <= ?";
+WHERE type <= ? ".$order;
 
   $tickets = $db->prepare($sql);
   $tickets->execute(array($departure, $destination, $max_transfer));
