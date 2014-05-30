@@ -1,9 +1,33 @@
 <?php require_once("header.php"); ?>
 <?php
-$departure = $_POST['departure'];
-$destination = $_POST['destination'];
-$max_transfer = $_POST['max_transfer'];
+if(isset($_POST['departure']) && isset($_POST['destination']) && isset($_POST['max_transfer']))
+{
+  $_SESSION['departure'] = $_POST['departure'];
+  $_SESSION['$destination'] = $_POST['destination'];
+  $_SESSION['$max_transfer'] = $_POST['max_transfer'];
+  $_SESSION['cancel'] = true;
+}
+else if($_SESSION['departure'] != ' ' && $_SESSION['destination'] != ' '  && $_SESSION['max_transfer'] != ' ')
+{
+  $_SESSION['departure'] =  $_SESSION['departure'];
+  $_SESSION['$destination'] = $_SESSION['destination'];
+  $_SESSION['$max_transfer'] = $_SESSION['max_transfer'];
+  $_SESSION['cancel'] = true;
+}
+else
+{
+  $_SESSION['departure'] = ' ' ;
+  $_SESSION['$destination'] = ' ' ;
+  $_SESSION['$max_transfer'] = ' ' ;
+  $_SESSION['cancel'] = false;
+}
+if($_SESSION['departure']!=)
+$departure = $_SESSION['departure'];
+$destination = $_SESSION['destination'];
+$max_transfer =$_SESSION['max_transfer'];
 $_SESSION['source'] = "search_ticket.php";
+
+
 
 $order = ' ';
 if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
@@ -73,6 +97,11 @@ require_once("order_button.php");
   </select>
   <button type="submit"><i class="fa fa-search"></i></button>
 </form>
+<?
+  if(isset($_SESSION['search']) && $_SESSION['search']!=" ")
+  {?>
+    <a href=ticket_cancel.php>取消</a>
+  <?}?>
 <?php
   $sql =
 "SELECT
