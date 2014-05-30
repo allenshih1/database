@@ -21,7 +21,7 @@ else
   $_SESSION['$max_transfer'] = ' ' ;
   $_SESSION['cancel'] = false;
 }
-if($_SESSION['departure']!=)
+
 $departure = $_SESSION['departure'];
 $destination = $_SESSION['destination'];
 $max_transfer =$_SESSION['max_transfer'];
