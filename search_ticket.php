@@ -3,30 +3,26 @@
 if(isset($_POST['departure']) && isset($_POST['destination']) && isset($_POST['max_transfer']))
 {
   $_SESSION['departure'] = $_POST['departure'];
-  $_SESSION['$destination'] = $_POST['destination'];
-  $_SESSION['$max_transfer'] = $_POST['max_transfer'];
-  $_SESSION['cancel'] = true;
+  $_SESSION['destination'] = $_POST['destination'];
+  $_SESSION['max_transfer'] = $_POST['max_transfer'];
+  $_SESSION['cancel'] = false;
+}
+else if(!isset($_SESSION['departure']) ||  $_SESSION['departure'] == ' ')
+{
+  $_SESSION['departure'] = ' ' ;
+  $_SESSION['destination'] = ' ' ;
+  $_SESSION['max_transfer'] = ' ' ;
+  $_SESSION['cancel'] = false;
 }
 else if($_SESSION['departure'] != ' ' && $_SESSION['destination'] != ' '  && $_SESSION['max_transfer'] != ' ')
 {
-  $_SESSION['departure'] =  $_SESSION['departure'];
-  $_SESSION['$destination'] = $_SESSION['destination'];
-  $_SESSION['$max_transfer'] = $_SESSION['max_transfer'];
   $_SESSION['cancel'] = true;
-}
-else
-{
-  $_SESSION['departure'] = ' ' ;
-  $_SESSION['$destination'] = ' ' ;
-  $_SESSION['$max_transfer'] = ' ' ;
-  $_SESSION['cancel'] = false;
 }
 
 $departure = $_SESSION['departure'];
 $destination = $_SESSION['destination'];
-$max_transfer =$_SESSION['max_transfer'];
+$max_transfer = $_SESSION['max_transfer'];
 $_SESSION['source'] = "search_ticket.php";
-
 
 
 $order = ' ';
@@ -34,10 +30,9 @@ if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
 {
   if(($_GET['orderKey'] == 'f_departure_date' || $_GET['orderKey'] == 'final_time' || $_GET['orderKey'] == 'price')
      && ($_GET['orderDirection'] == 'asc' || $_GET['orderDirection'] == 'desc' ))
-    $order = "ORDER BY ".$_GET['orderKey']." ".$_GET['orderDirection'].",".$order;
+    $order = "ORDER BY ".$_GET['orderKey']." ".$_GET['orderDirection'];
 }
 
-echo "$max_transfer";
 require_once("db.php");
 require_once("order_button.php");
 ?>
@@ -98,7 +93,7 @@ require_once("order_button.php");
   <button type="submit"><i class="fa fa-search"></i></button>
 </form>
 <?
-  if(isset($_SESSION['search']) && $_SESSION['search']!=" ")
+  if($_SESSION['cancel'] == true )
   {?>
     <a href=ticket_cancel.php>取消</a>
   <?}?>
