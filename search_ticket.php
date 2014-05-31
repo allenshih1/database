@@ -99,7 +99,19 @@ require_once("order_button.php");
   <?}?>
 <?php
   $sql =
-"SELECT
+  "
+SELECT
+	CASE type
+		WHEN 0 THEN f_flight_time
+		WHEN 1 THEN ADDTIME(f_flight_time, s_flight_time)
+		WHEN 2 THEN ADDTIME(ADDTIME(f_flight_time, s_flight_time), t_flight_time)
+		ELSE             null
+	END
+	AS flight_time,
+  c.*
+FROM
+(
+SELECT
 	CASE type
 		WHEN 0 THEN f_arrival_date
 		WHEN 1 THEN s_arrival_date
@@ -182,7 +194,7 @@ FROM
 					null AS ticket_price
 			) AS s
 			ON
-				(f.destination = s.departure AND f.arrival_date + interval 2 hour <= s.departure_date)
+				(f.destination = s.departure AND f.arrival_date + interval 2 hour <= s.departure_date AND f.departure != s.destination)
 				OR s.id is null
 		) AS b
 		JOIN
@@ -209,6 +221,7 @@ FROM
 			ELSE t.destination
 		END = ?
 ) AS a
+) AS c
 WHERE type <= ? ".$order;
 
   $tickets = $db->prepare($sql);
@@ -223,6 +236,7 @@ WHERE type <= ? ".$order;
       <td> Departure_Time <?echo OrderButton('f_departure_date',$_SESSION['source']);?></td>
       <td> Arrival_Time <?echo OrderButton('final_time',$_SESSION['source']);?></td>
       <td> Flight_Time </td>
+      <td> Total_Flight_Time </td>
       <td> Transfer Time </td>
       <td> Price <?echo OrderButton('price',$_SESSION['source']);?></td>
     </tr>
@@ -239,6 +253,7 @@ WHERE type <= ? ".$order;
     <td> <?= $ticket->f_departure_date ?> </td>
     <td> <?= $ticket->f_arrival_date ?> </td>
     <td> <?= $ticket->f_flight_time ?> </td>
+    <td> <?= $ticket->flight_time ?> </td>
     <td> <?= $ticket->transfer_time ?> </td>
     <td> <?= $ticket->price ?> </td>
   </tr>
@@ -256,6 +271,7 @@ WHERE type <= ? ".$order;
     <td> <?= $ticket->s_flight_time ?> </td>
     <td> </td>
     <td> </td>
+    <td> </td>
   </tr>
 <?php
     }
@@ -270,6 +286,7 @@ WHERE type <= ? ".$order;
     <td> <?= $ticket->t_departure_date ?> </td>
     <td> <?= $ticket->t_arrival_date ?> </td>
     <td> <?= $ticket->t_flight_time ?> </td>
+    <td> </td>
     <td> </td>
     <td> </td>
   </tr>
