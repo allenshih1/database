@@ -55,7 +55,7 @@ require_once("order_button.php");
       while($airport=$airports->fetchObject())
       {
     ?>
-        <option value="<?= $airport->abbr ?>"> <?= $airport->name ?> </option>
+        <option value="<?= $airport->abbr ?>"> <?= $airport->abbr.",".$airport->name ?> </option>
     <?php
       }
     }
@@ -101,6 +101,7 @@ require_once("order_button.php");
   $sql =
   "
 SELECT
+	TIMEDIFF(final_time, f_departure_date) AS total_time,
 	CASE type
 		WHEN 0 THEN f_flight_time
 		WHEN 1 THEN ADDTIME(f_flight_time, s_flight_time)
@@ -227,7 +228,7 @@ WHERE type <= ? ".$order;
   $tickets = $db->prepare($sql);
   $tickets->execute(array($departure, $destination, $max_transfer));
 ?>
-  <table style="width:1000px">
+  <table style="width:1200px">
     <tr>
       <td> Result </td>
       <td> Flight_Number </td>
@@ -237,7 +238,8 @@ WHERE type <= ? ".$order;
       <td> Arrival_Time <?echo OrderButton('final_time',$_SESSION['source']);?></td>
       <td> Flight_Time </td>
       <td> Total_Flight_Time </td>
-      <td> Transfer Time </td>
+      <td> Transfer_Time </td>
+      <td> Total_Time </td>
       <td> Price <?echo OrderButton('price',$_SESSION['source']);?></td>
     </tr>
 <?php
@@ -255,6 +257,7 @@ WHERE type <= ? ".$order;
     <td> <?= $ticket->f_flight_time ?> </td>
     <td> <?= $ticket->flight_time ?> </td>
     <td> <?= $ticket->transfer_time ?> </td>
+    <td> <?= $ticket->total_time ?> </td>
     <td> <?= $ticket->price ?> </td>
   </tr>
 <?php
@@ -269,6 +272,7 @@ WHERE type <= ? ".$order;
     <td> <?= $ticket->s_departure_date ?> </td>
     <td> <?= $ticket->s_arrival_date ?> </td>
     <td> <?= $ticket->s_flight_time ?> </td>
+    <td> </td>
     <td> </td>
     <td> </td>
     <td> </td>
@@ -289,6 +293,7 @@ WHERE type <= ? ".$order;
     <td> </td>
     <td> </td>
     <td> </td>
+    <td> </td>
   </tr>
 <?php
     }
@@ -296,4 +301,5 @@ WHERE type <= ? ".$order;
   }
 ?>
   </table>
+<?php require_once("search_sql.php"); ?>
 <?php require_once("footer.php"); ?>

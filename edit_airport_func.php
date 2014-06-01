@@ -7,8 +7,10 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
 {
   $id = $_POST['id'];
   $name = $_POST['name'];
+  $country = $_POST['country'];
   $longitude = $_POST['longitude'];
   $latitude = $_POST['latitude'];
+  $timezone = $_POST['timezone'];
   require_once('db.php');
   $sql = "SELECT * FROM Airport WHERE id = ? ";
   $sth = $db->prepare($sql);
@@ -16,11 +18,13 @@ if(isset($_SESSION['isAuth']) && $_SESSION['isAdmin'])
   if($airport = $sth->fetchObject())
   {
     $sql = "UPDATE Airport SET name = ?,"
+      ." country = ?,"
       ." longitude = ?,"
-      ." latitude = ?"
+      ." latitude = ?,"
+      ." timezone = ?"
       ." WHERE id = ?";
     $sth = $db->prepare($sql);
-    $sth->execute(array($name, $longitude, $latitude, $id));
+    $sth->execute(array($name, $country, $longitude, $latitude, $timezone, $id));
     header('Location: airport_management.php');
   }
   else
