@@ -33,7 +33,8 @@ if($overnight==='yes')
 $order = ' ';
 if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
 {
-  if(($_GET['orderKey'] == 'f_departure_date' || $_GET['orderKey'] == 'final_time' || $_GET['orderKey'] == 'price')
+  if(($_GET['orderKey'] == 'f_departure_date' || $_GET['orderKey'] == 'final_time' || $_GET['orderKey'] == 'price' ||
+      $_GET['orderKey'] == 'total_time' || $_GET['orderKey'] == 'flight_time' || $_GET['orderKey'] == 'transfer_time')
      && ($_GET['orderDirection'] == 'asc' || $_GET['orderDirection'] == 'desc' ))
     $order = "ORDER BY ".$_GET['orderKey']." ".$_GET['orderDirection'];
 }
@@ -243,9 +244,9 @@ WHERE type <= ? ".$overnightsql.$order;
       <td> Departure_Time <?echo OrderButton('f_departure_date',$_SESSION['source']);?></td>
       <td> Arrival_Time <?echo OrderButton('final_time',$_SESSION['source']);?></td>
       <td> Flight_Time </td>
-      <td> Total_Flight_Time </td>
-      <td> Transfer_Time </td>
-      <td> Total_Time </td>
+      <td> Total_Flight_Time <?echo OrderButton('flight_time',$_SESSION['source']);?></td>
+      <td> Transfer_Time <?echo OrderButton('transfer_time',$_SESSION['source']);?></td>
+      <td> Total_Time <?echo OrderButton('total_time',$_SESSION['source']);?></td>
       <td> Price <?echo OrderButton('price',$_SESSION['source']);?></td>
     </tr>
 <?php
