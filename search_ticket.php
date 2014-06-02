@@ -265,8 +265,49 @@ WHERE type <= ? ".$overnightsql.$order;
     <td> <?= $ticket->transfer_time ?> </td>
     <td> <?= $ticket->total_time ?> </td>
     <td> <?= $ticket->price ?> </td>
+<?php
+      if(isset($_SESSION['isAuth']))
+      {
+        $uid = $_SESSION['uid'];
+        $type = $ticket->type;
+        $f_id = $ticket->f_id;
+        $s_id = $ticket->s_id;
+        $t_id = $ticket->t_id;
+        if($type === '0')
+        {
+          $sql = "SELECT * FROM Ticket WHERE user_id = ? and f_id = ? and s_id is null and t_id is null";
+          $search_compare = $db->prepare($sql);
+          $search_compare->execute(array($uid, $f_id));
+        }
+        if($type === '1')
+        {
+          $sql = "SELECT * FROM Ticket WHERE user_id = ? and f_id = ? and s_id = ? and t_id is null";
+          $search_compare = $db->prepare($sql);
+          $search_compare->execute(array($uid, $f_id, $s_id));
+        }
+        if($type === '2')
+        {
+          $sql = "SELECT * FROM Ticket WHERE user_id = ? and f_id = ? and s_id = ? and t_id = ?";
+          $search_compare = $db->prepare($sql);
+          $search_compare->execute(array($uid, $f_id, $s_id, $t_id));
+        }
+
+        if(!($search_compare->fetchObject()))
+        {
+?>
+    <td>
+      <form action="add_to_ticket.php" method="POST">
+        <input type="hidden" name="type" value="<?= $ticket->type ?>">
+        <input type="hidden" name="f_id" value="<?= $ticket->f_id ?>">
+        <input type="hidden" name="s_id" value="<?= $ticket->s_id ?>">
+        <input type="hidden" name="t_id" value="<?= $ticket->t_id ?>">
+        <button type="submit">加入比價表</button>
+      </form>
+    </td>
   </tr>
 <?php
+        }
+      }
     if($ticket->type >= 1)
     {
 ?>
