@@ -5,6 +5,7 @@ if(isset($_POST['departure']) && isset($_POST['destination']) && isset($_POST['m
   $_SESSION['departure'] = $_POST['departure'];
   $_SESSION['destination'] = $_POST['destination'];
   $_SESSION['max_transfer'] = $_POST['max_transfer'];
+  $_SESSION['overnight'] = $_POST['overnight'];
   $_SESSION['cancel'] = false;
 }
 else if(!isset($_SESSION['departure']) ||  $_SESSION['departure'] == ' ')
@@ -12,6 +13,7 @@ else if(!isset($_SESSION['departure']) ||  $_SESSION['departure'] == ' ')
   $_SESSION['departure'] = ' ' ;
   $_SESSION['destination'] = ' ' ;
   $_SESSION['max_transfer'] = ' ' ;
+  $_SESSION['overnight'] = ' ' ;
   $_SESSION['cancel'] = false;
 }
 else if($_SESSION['departure'] != ' ' && $_SESSION['destination'] != ' '  && $_SESSION['max_transfer'] != ' ')
@@ -22,8 +24,11 @@ else if($_SESSION['departure'] != ' ' && $_SESSION['destination'] != ' '  && $_S
 $departure = $_SESSION['departure'];
 $destination = $_SESSION['destination'];
 $max_transfer = $_SESSION['max_transfer'];
+$overnight = $_SESSION['overnight'];
 $_SESSION['source'] = "search_ticket.php";
 
+if($overnight==='yes')
+  $overnightsql = ' AND (DATE(f_arrival_date) = DATE(s_departure_date) OR s_id is null) AND (DATE(s_arrival_date) = DATE(t_departure_date) OR t_id is null) ';
 
 $order = ' ';
 if(isset($_GET['orderKey']) && isset($_GET['orderDirection']))
@@ -55,7 +60,7 @@ require_once("order_button.php");
       while($airport=$airports->fetchObject())
       {
     ?>
-        <option value="<?= $airport->abbr ?>"> <?= $airport->abbr.",".$airport->name ?> </option>
+        <option value="<?= $airport->abbr ?>"<?php if($departure === $airport->abbr) echo ' selected="selected"'?>> <?= $airport->abbr.",".$airport->name ?> </option>
     <?php
       }
     }
@@ -78,7 +83,7 @@ require_once("order_button.php");
       while($airport=$airports->fetchObject())
       {
     ?>
-        <option value="<?= $airport->abbr ?>"> <?= $airport->name ?> </option>
+        <option value="<?= $airport->abbr ?>"<?php if($destination === $airport->abbr) echo ' selected="selected"'?>> <?= $airport->abbr.",".$airport->name ?> </option>
     <?php
       }
     }
@@ -86,10 +91,11 @@ require_once("order_button.php");
   </select>
   Max_Transfer
   <select name="max_transfer">
-    <option value="0"> 0 </option>
-    <option value="1"> 1 </option>
-    <option value="2"> 2 </option>
+    <option value="0"<?php if($max_transfer === '0') echo ' selected="selected"'?>> 0 </option>
+    <option value="1"<?php if($max_transfer === '1') echo ' selected="selected"'?>> 1 </option>
+    <option value="2"<?php if($max_transfer === '2') echo ' selected="selected"'?>> 2 </option>
   </select>
+  <input type="checkbox" name="overnight" value="yes"<?php if($overnight === 'yes') echo " checked"; ?>>overnight
   <button type="submit"><i class="fa fa-search"></i></button>
 </form>
 <?
@@ -223,7 +229,7 @@ FROM
 		END = ?
 ) AS a
 ) AS c
-WHERE type <= ? ".$order;
+WHERE type <= ? ".$overnightsql.$order;
 
   $tickets = $db->prepare($sql);
   $tickets->execute(array($departure, $destination, $max_transfer));
