@@ -4,7 +4,6 @@
 if(isset($_SESSION['isAuth']))
 {
   require_once("db.php");
-  require_once("order_button.php");
   $uid = $_SESSION['uid'];
   $sql = "
 SELECT
@@ -135,13 +134,13 @@ FROM
       <td> Flight_Number </td>
       <td> Departure_Airport </td>
       <td> Destination_Airport </td>
-      <td> Departure_Time <?echo OrderButton('f_departure_date',$_SESSION['source']);?></td>
-      <td> Arrival_Time <?echo OrderButton('final_time',$_SESSION['source']);?></td>
+      <td> Departure_Time </td>
+      <td> Arrival_Time </td>
       <td> Flight_Time </td>
       <td> Total_Flight_Time </td>
       <td> Transfer_Time </td>
       <td> Total_Time </td>
-      <td> Price <?echo OrderButton('price',$_SESSION['source']);?></td>
+      <td> Price </td>
     </tr>
 <?php
   $i = 1;
